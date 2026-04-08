@@ -34,3 +34,4 @@ cover.html
 
 .idea/
 .DS_Store/
+.env
