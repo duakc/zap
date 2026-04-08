@@ -156,6 +156,9 @@ func (log *Logger) Named(s string) *Logger {
 		return log
 	}
 	l := log.clone()
+	if strings.Contains(s, ".") {
+		s = "[" + s + "]"
+	}
 	if log.name == "" {
 		l.name = s
 	} else {

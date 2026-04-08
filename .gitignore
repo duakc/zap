@@ -30,3 +30,7 @@ _testmain.go
 /bin
 cover.out
 cover.html
+
+
+.idea/
+.DS_Store/
