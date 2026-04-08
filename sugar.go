@@ -143,6 +143,10 @@ func (s *SugaredLogger) Log(lvl zapcore.Level, args ...interface{}) {
 	s.log(lvl, "", args, nil)
 }
 
+func (s *SugaredLogger) Trace(args ...interface{}) {
+	s.log(TraceLevel, "", args, nil)
+}
+
 // Debug logs the provided arguments at [DebugLevel].
 // Spaces are added between arguments when neither is a string.
 func (s *SugaredLogger) Debug(args ...interface{}) {
@@ -192,6 +196,10 @@ func (s *SugaredLogger) Logf(lvl zapcore.Level, template string, args ...interfa
 	s.log(lvl, template, args, nil)
 }
 
+func (s *SugaredLogger) Tracef(template string, args ...interface{}) {
+	s.log(TraceLevel, template, args, nil)
+}
+
 // Debugf formats the message according to the format specifier
 // and logs it at [DebugLevel].
 func (s *SugaredLogger) Debugf(template string, args ...interface{}) {
@@ -239,6 +247,10 @@ func (s *SugaredLogger) Fatalf(template string, args ...interface{}) {
 // pairs are treated as they are in With.
 func (s *SugaredLogger) Logw(lvl zapcore.Level, msg string, keysAndValues ...interface{}) {
 	s.log(lvl, msg, nil, keysAndValues)
+}
+
+func (s *SugaredLogger) Tracew(msg string, keysAndValues ...interface{}) {
+	s.log(TraceLevel, msg, nil, keysAndValues)
 }
 
 // Debugw logs a message with some additional context. The variadic key-value
@@ -292,6 +304,10 @@ func (s *SugaredLogger) Fatalw(msg string, keysAndValues ...interface{}) {
 // Spaces are always added between arguments.
 func (s *SugaredLogger) Logln(lvl zapcore.Level, args ...interface{}) {
 	s.logln(lvl, args, nil)
+}
+
+func (s *SugaredLogger) Traceln(args ...interface{}) {
+	s.logln(TraceLevel, args, nil)
 }
 
 // Debugln logs a message at [DebugLevel].

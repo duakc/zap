@@ -226,7 +226,7 @@ func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 // on the default encoder configuration.
 func NewDevelopmentConfig() Config {
 	return Config{
-		Level:            NewAtomicLevelAt(DebugLevel),
+		Level:            NewAtomicLevelAt(TraceLevel),
 		Development:      true,
 		Encoding:         "console",
 		EncoderConfig:    NewDevelopmentEncoderConfig(),

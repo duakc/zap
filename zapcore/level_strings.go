@@ -24,15 +24,16 @@ import "go.uber.org/zap/internal/color"
 
 var (
 	_levelToColor = map[Level]color.Color{
-		DebugLevel:  color.Magenta,
-		InfoLevel:   color.Blue,
+		TraceLevel:  color.White,
+		DebugLevel:  color.Green,
+		InfoLevel:   color.Cyan,
 		WarnLevel:   color.Yellow,
 		ErrorLevel:  color.Red,
 		DPanicLevel: color.Red,
 		PanicLevel:  color.Red,
 		FatalLevel:  color.Red,
 	}
-	_unknownLevelColor = color.Red
+	_unknownLevelColor = color.Magenta
 
 	_levelToLowercaseColorString = make(map[Level]string, len(_levelToColor))
 	_levelToCapitalColorString   = make(map[Level]string, len(_levelToColor))

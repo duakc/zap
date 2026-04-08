@@ -272,7 +272,7 @@ func TestSamplerRaces(t *testing.T) {
 func TestSamplerUnknownLevels(t *testing.T) {
 	// Prove that out-of-bounds levels don't panic.
 	unknownLevels := []Level{
-		DebugLevel - 1,
+		TraceLevel - 1,
 		FatalLevel + 1,
 	}
 

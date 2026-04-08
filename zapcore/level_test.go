@@ -31,6 +31,7 @@ import (
 
 func TestLevelString(t *testing.T) {
 	tests := map[Level]string{
+		TraceLevel:   "trace",
 		DebugLevel:   "debug",
 		InfoLevel:    "info",
 		WarnLevel:    "warn",
@@ -53,6 +54,7 @@ func TestLevelText(t *testing.T) {
 		text  string
 		level Level
 	}{
+		{"trace", TraceLevel},
 		{"debug", DebugLevel},
 		{"info", InfoLevel},
 		{"", InfoLevel}, // make the zero value useful
@@ -93,6 +95,7 @@ func TestParseLevel(t *testing.T) {
 		level Level
 		err   string
 	}{
+		{"trace", TraceLevel, ""},
 		{"info", InfoLevel, ""},
 		{"DEBUG", DebugLevel, ""},
 		{"FOO", 0, `unrecognized level: "FOO"`},
@@ -114,6 +117,7 @@ func TestCapitalLevelsParse(t *testing.T) {
 		text  string
 		level Level
 	}{
+		{"TRACE", TraceLevel},
 		{"DEBUG", DebugLevel},
 		{"INFO", InfoLevel},
 		{"WARN", WarnLevel},
@@ -136,6 +140,7 @@ func TestWeirdLevelsParse(t *testing.T) {
 		level Level
 	}{
 		// I guess...
+		{"Trace", TraceLevel},
 		{"Debug", DebugLevel},
 		{"Info", InfoLevel},
 		{"Warn", WarnLevel},
@@ -145,6 +150,7 @@ func TestWeirdLevelsParse(t *testing.T) {
 		{"Fatal", FatalLevel},
 
 		// What even is...
+		{"TraCe", TraceLevel},
 		{"DeBuG", DebugLevel},
 		{"InFo", InfoLevel},
 		{"WaRn", WarnLevel},
@@ -229,6 +235,7 @@ func TestLevelOf(t *testing.T) {
 		give LevelEnabler
 		want Level
 	}{
+		{desc: "trace", give: TraceLevel, want: TraceLevel},
 		{desc: "debug", give: DebugLevel, want: DebugLevel},
 		{desc: "info", give: InfoLevel, want: InfoLevel},
 		{desc: "warn", give: WarnLevel, want: WarnLevel},

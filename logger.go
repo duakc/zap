@@ -135,7 +135,7 @@ func NewExample(options ...Option) *Logger {
 		EncodeTime:     zapcore.ISO8601TimeEncoder,
 		EncodeDuration: zapcore.StringDurationEncoder,
 	}
-	core := zapcore.NewCore(zapcore.NewJSONEncoder(encoderCfg), os.Stdout, DebugLevel)
+	core := zapcore.NewCore(zapcore.NewJSONEncoder(encoderCfg), os.Stdout, TraceLevel)
 	return New(core).WithOptions(options...)
 }
 
@@ -231,6 +231,12 @@ func (log *Logger) Check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 // invocation of Log.
 func (log *Logger) Log(lvl zapcore.Level, msg string, fields ...Field) {
 	if ce := log.check(lvl, msg); ce != nil {
+		ce.Write(fields...)
+	}
+}
+
+func (log *Logger) Trace(msg string, fields ...Field) {
+	if ce := log.check(TraceLevel, msg); ce != nil {
 		ce.Write(fields...)
 	}
 }

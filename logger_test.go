@@ -558,11 +558,11 @@ func TestLoggerNames(t *testing.T) {
 		{[]string{"foo"}, "foo"},
 		{[]string{"foo", ""}, "foo"},
 		{[]string{"foo", "bar"}, "foo.bar"},
-		{[]string{"foo.bar", "baz"}, "foo.bar.baz"},
+		{[]string{"foo.bar", "baz"}, "[foo.bar].baz"},
 		// Garbage in, garbage out.
-		{[]string{"foo.", "bar"}, "foo..bar"},
-		{[]string{"foo", ".bar"}, "foo..bar"},
-		{[]string{"foo.", ".bar"}, "foo...bar"},
+		{[]string{"foo.", "bar"}, "[foo.].bar"},
+		{[]string{"foo", ".bar"}, "foo.[.bar]"},
+		{[]string{"foo.", ".bar"}, "[foo.].[.bar]"},
 	}
 
 	for _, tt := range tests {
