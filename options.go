@@ -184,3 +184,9 @@ func WithClock(clock zapcore.Clock) Option {
 		log.clock = clock
 	})
 }
+
+func WithFastSync() Option {
+	return optionFunc(func(log *Logger) {
+		log.fastSync = true
+	})
+}

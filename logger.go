@@ -43,8 +43,12 @@ type Logger struct {
 
 	development bool
 	addCaller   bool
-	onPanic     zapcore.CheckWriteHook // default is WriteThenPanic
-	onFatal     zapcore.CheckWriteHook // default is WriteThenFatal
+
+	// use a bool value instead direct wrapper a core
+	// to make sure sync on the top core.
+	fastSync bool
+	onPanic  zapcore.CheckWriteHook // default is WriteThenPanic
+	onFatal  zapcore.CheckWriteHook // default is WriteThenFatal
 
 	name        string
 	errorOutput zapcore.WriteSyncer
@@ -76,7 +80,11 @@ func New(core zapcore.Core, options ...Option) *Logger {
 		addStack:    zapcore.FatalLevel + 1,
 		clock:       zapcore.DefaultClock,
 	}
-	return log.WithOptions(options...)
+	log = log.WithOptions(options...)
+	if log.fastSync {
+		log.core = zapcore.FastSync(core)
+	}
+	return log
 }
 
 // NewNop returns a no-op Logger. It never writes out logs or internal errors,

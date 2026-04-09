@@ -1052,6 +1052,45 @@ func TestMust(t *testing.T) {
 	})
 }
 
+type customSyncCore struct {
+	zapcore.Core
+	triggered bool
+}
+
+func (c *customSyncCore) Sync() error {
+	c.triggered = true
+	return nil
+}
+
+func TestWithFastSync(t *testing.T) {
+	t.Run("must sync non-sugar", func(t *testing.T) {
+		core := &customSyncCore{Core: zapcore.NewDiscard()}
+		logger := New(core, WithFastSync(), Development(), WithPanicHook(&customWriteHook{}),
+			WithFatalHook(&customWriteHook{}))
+		for _, fn := range []func(msg string, fields ...Field){
+			logger.Trace, logger.Debug, logger.Info, logger.Warn, logger.Error,
+			logger.DPanic, logger.Panic, logger.Fatal,
+		} {
+			fn("")
+			assert.True(t, core.triggered, "Core Sync must triggered when fastSync set")
+			core.triggered = false
+		}
+	})
+	t.Run("must sync sugar", func(t *testing.T) {
+		core := &customSyncCore{Core: zapcore.NewDiscard()}
+		logger := New(core, WithFastSync(), Development(), WithPanicHook(&customWriteHook{}),
+			WithFatalHook(&customWriteHook{})).Sugar()
+		for _, fn := range []func(...any){
+			logger.Trace, logger.Debug, logger.Info, logger.Warn, logger.Error,
+			logger.DPanic, logger.Panic, logger.Fatal,
+		} {
+			fn("")
+			assert.True(t, core.triggered, "Core Sync must triggered when fastSync set")
+			core.triggered = false
+		}
+	})
+}
+
 func infoLog(logger *Logger, msg string, fields ...Field) {
 	logger.Info(msg, fields...)
 }

@@ -54,6 +54,19 @@ func (nopCore) Check(_ Entry, ce *CheckedEntry) *CheckedEntry { return ce }
 func (nopCore) Write(Entry, []Field) error                    { return nil }
 func (nopCore) Sync() error                                   { return nil }
 
+// different from NOP: it will always call Write method but discarded all message
+type discardCore struct{}
+
+func NewDiscard() Core { return &discardCore{} }
+
+func (d *discardCore) Enabled(level Level) bool                { return true }
+func (d *discardCore) With(fields []Field) Core                { return d }
+func (d *discardCore) Write(entry Entry, fields []Field) error { return nil }
+func (d *discardCore) Sync() error                             { return nil }
+func (d *discardCore) Check(entry Entry, ce *CheckedEntry) *CheckedEntry {
+	return ce.AddCore(entry, d)
+}
+
 // NewCore creates a Core that writes logs to a WriteSyncer.
 func NewCore(enc Encoder, ws WriteSyncer, enab LevelEnabler) Core {
 	return &ioCore{
